@@ -93,6 +93,8 @@ signing_key.x509
 x509.genkey
 
 # Compiled kernel
+!build/system/lib/fpc_fingerprint_hal.so
+!build/system/lib64/fpc_fingerprint_hal.so
 build/*.zip
 build/tools/dt.img
 build/tools/Image
