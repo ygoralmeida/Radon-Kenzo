@@ -47,7 +47,6 @@ config QCOM_VOWIFI_11R
 
 config ENABLE_LINUX_REG
 	bool "Enable linux regulatory feature"
-	default n
 
 config QCOM_TDLS
 	bool "Enable TDLS (Tunnel Direct Link Setup) feature"

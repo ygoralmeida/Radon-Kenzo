@@ -319,6 +319,11 @@
 #define CFG_ENABLE_ADAPT_RX_DRAIN_MAX       WNI_CFG_ENABLE_ADAPT_RX_DRAIN_STAMAX
 #define CFG_ENABLE_ADAPT_RX_DRAIN_DEFAULT   WNI_CFG_ENABLE_ADAPT_RX_DRAIN_STADEF
 
+#define CFG_DISABLE_BAR_WAKEUP_HOST_NAME       "gDisableBarWakeUp"
+#define CFG_DISABLE_BAR_WAKEUP_HOST_MIN         0
+#define CFG_DISABLE_BAR_WAKEUP_HOST_MAX         1
+#define CFG_DISABLE_BAR_WAKEUP_HOST_DEFAULT     0
+
 typedef enum
 {
     eHDD_DOT11_MODE_AUTO = 0, //covers all things we support
@@ -1090,7 +1095,7 @@ typedef enum
 #define CFG_ENABLE_LOGP_NAME                                "gEnableLogp"
 #define CFG_ENABLE_LOGP_MIN                                 ( 0 )
 #define CFG_ENABLE_LOGP_MAX                                 ( 1 )
-#define CFG_ENABLE_LOGP_DEFAULT                             ( 0 )
+#define CFG_ENABLE_LOGP_DEFAULT                             ( 1 )
 
 #define CFG_BTC_EXECUTION_MODE_NAME                         "BtcExecutionMode"
 #define CFG_BTC_EXECUTION_MODE_MIN                          ( 0 )
@@ -1540,11 +1545,22 @@ typedef enum
 #define CFG_OBSS_HT40_SCAN_WIDTH_TRIGGER_INTERVAL_MAX             ( 900 )
 #define CFG_OBSS_HT40_SCAN_WIDTH_TRIGGER_INTERVAL_DEFAULT         ( 200 )
 
+/* RPS configurations */
+#define CFG_RPS_CPU_MAP_MIN                        (0)
+#define CFG_RPS_CPU_MAP_MAX                        (0xff)
+
+#define CFG_RPS_CPU_MAP_NAME                       "rps_mask"
+#define CFG_RPS_CPU_MAP_DEFAULT                    (0x00)
+
 #define CFG_MULTICAST_HOST_FW_MSGS          "gMulticastHostMsgs"
 #define CFG_MULTICAST_HOST_FW_MSGS_MIN      (0)
 #define CFG_MULTICAST_HOST_FW_MSGS_MAX      (1)
 #define CFG_MULTICAST_HOST_FW_MSGS_DEFAULT  (1)
 
+#define CFG_ENABLE_TCP_DELACK_NAME           "gEnableDelAck"
+#define CFG_ENABLE_TCP_DELACK_MIN            (0)
+#define CFG_ENABLE_TCP_DELACK_MAX            (1)
+#define CFG_ENABLE_TCP_DELACK_DEFAULT        (1)
 
 /* In cfg.dat 1=1MBPS, 2=2MBPS, 3=5_5MBPS, 4=11MBPS, 5=6MBPS, 6=9MBPS,
  * 7=12MBPS, 8=18MBPS, 9=24MBPS. But 6=9MBPS and 8=18MBPS are not basic
@@ -2283,6 +2299,21 @@ This feature requires the dependent cfg.ini "gRoamPrefer5GHz" set to 1 */
 #define CFG_ROAMING_DFS_CHANNEL_MIN                 (0)
 #define CFG_ROAMING_DFS_CHANNEL_MAX                 (1)
 #define CFG_ROAMING_DFS_CHANNEL_DEFAULT             (1)
+
+#define CFG_TCP_DELACK_COMPUTE_INTERVAL         "gTcpDelAckComputeInterval"
+#define CFG_TCP_DELACK_COMPUTE_INTERVAL_DEFAULT ( 2000 )
+#define CFG_TCP_DELACK_COMPUTE_INTERVAL_MIN     ( 1000 )
+#define CFG_TCP_DELACK_COMPUTE_INTERVAL_MAX     ( 10000 )
+
+#define CFG_TCP_DELACK_THRESHOLD_HIGH              "gTcpDelAckThresholdHigh"
+#define CFG_TCP_DELACK_THRESHOLD_HIGH_DEFAULT      ( 17000 )
+#define CFG_TCP_DELACK_THRESHOLD_HIGH_MIN          ( 1000 )
+#define CFG_TCP_DELACK_THRESHOLD_HIGH_MAX          ( 25000 )
+
+#define CFG_TCP_DELACK_THRESHOLD_LOW               "gTcpDelAckThresholdLow"
+#define CFG_TCP_DELACK_THRESHOLD_LOW_DEFAULT       ( 12000 )
+#define CFG_TCP_DELACK_THRESHOLD_LOW_MIN           ( 0 )
+#define CFG_TCP_DELACK_THRESHOLD_LOW_MAX           ( 25000 )
 
 
 #ifdef WLAN_LOGGING_SOCK_SVC_ENABLE
@@ -3040,6 +3071,9 @@ typedef struct
    v_U32_t                     cfgBtcCriticalHidnSniffBlkGuidance;
    v_U32_t                     cfgBtcA2dpTxQueueThold;
    v_U32_t                     cfgBtcOppTxQueueThold;
+   v_U32_t                     tcpDelAckComputeInterval;
+   v_U32_t                     tcpDelAckThresholdHigh;
+   v_U32_t                     tcpDelAckThresholdLow;
 
 #ifdef WLAN_FEATURE_11W
    v_U32_t                     pmfSaQueryMaxRetries;
@@ -3089,6 +3123,9 @@ typedef struct
    v_U8_t                      gOptimizeCAevent;
    v_BOOL_t                    crash_inject_enabled;
    v_U8_t                      boffset_correction_enable;
+   v_BOOL_t                    disableBarWakeUp;
+   v_U16_t                      rps_mask;
+   v_U32_t                     enable_delack;
 } hdd_config_t;
 
 /*--------------------------------------------------------------------------- 
