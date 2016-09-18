@@ -33,7 +33,7 @@ export CROSS_COMPILE="/home/umang/toolchain/aarch64-linux-linaro-android-4.9/bin
 export LD_LIBRARY_PATH=home/umang/toolchain/aarch64-linux-linaro-android-4.9/lib/
 STRIP="/home/umang/toolchain/aarch64-linux-linaro-android-4.9/bin/aarch64-linux-android-strip"
 make clean
-make cyanogenmod_kenzo_defconfig
+make kenzo_defconfig
 export KBUILD_BUILD_HOST="G5070"
 export KBUILD_BUILD_USER="Umang"
 make -j4
