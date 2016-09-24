@@ -71,9 +71,9 @@ else
 cd $KERNEL_DIR/build
 rm *.zip
 if [ $choice == 2 ]; then
-zip -r Radon-Kenzo-Test-Miui-LP$time.zip *
+zip -r Radon-Kenzo-Test-Mi-Lp$time.zip *
 else
-zip -r Radon-Kenzo-Stable-Miui-LP.zip *
+zip -r Radon-Kenzo-Stable-Mi-Lp.zip *
 fi
 End=$(date +"%s")
 Diff=$(($End - $Start))
