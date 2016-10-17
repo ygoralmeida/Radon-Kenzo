@@ -96,6 +96,6 @@ x509.genkey
 !build/system/lib/fpc_fingerprint_hal.so
 !build/system/lib64/fpc_fingerprint_hal.so
 build/*.zip
-build/tools/dt.img
-build/tools/Image1
-build/tools/Image2
+build/tools/dt1.img
+build/tools/dt2.img
+build/tools/Image

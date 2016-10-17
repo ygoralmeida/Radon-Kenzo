@@ -15,5 +15,5 @@
  #
  # Please maintain this if you use this script or any part of it
  #
-cp /tmp/wlan1.ko /system/lib/modules/wlan.ko
-cp /tmp/wlan1.ko /system/lib/modules/pronto/pronto_wlan.ko
+cp /tmp/wlan.ko /system/lib/modules/wlan.ko
+cp /tmp/wlan.ko /system/lib/modules/pronto/pronto_wlan.ko
