@@ -843,7 +843,7 @@ case "$target" in
         if [ "$ProductName" == "msm8952_32" ] || [ "$ProductName" == "msm8952_32_LMT" ]; then
             echo 1 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
             echo 53059 > /sys/module/lowmemorykiller/parameters/vmpressure_file_min
-        elif [ "$ProductName" == "msm8952_64" ] || [ "$ProductName" == "msm8952_64_LMT" ] || [ "$ProductName" == "kate" ] || [ "$ProductName" == "kenzo" ]; then
+        elif [ "$ProductName" == "msm8952_64" ] || [ "$ProductName" == "msm8952_64_LMT" ] || [ "$ProductName" == "kenzo" ]; then
             echo 1 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
             echo 81250 > /sys/module/lowmemorykiller/parameters/vmpressure_file_min
             MemTotalStr=`cat /proc/meminfo | grep MemTotal`
@@ -896,8 +896,6 @@ case "$target" in
                 echo 0 > /sys/devices/system/cpu/cpu5/sched_prefer_idle
                 echo 0 > /sys/devices/system/cpu/cpu6/sched_prefer_idle
                 echo 0 > /sys/devices/system/cpu/cpu7/sched_prefer_idle
-
-                echo 0 > /proc/sys/kernel/sched_boost
 
                 for devfreq_gov in /sys/class/devfreq/qcom,mincpubw*/governor
                 do
@@ -968,6 +966,25 @@ case "$target" in
                 echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
                 echo 806400 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 
+                # re-enable thermal & BCL core_control now
+                echo 1 > /sys/module/msm_thermal/core_control/enabled
+                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
+                do
+                    echo -n disable > $mode
+                done
+                for hotplug_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_mask
+                do
+                    echo $bcl_hotplug_mask > $hotplug_mask
+                done
+                for hotplug_soc_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_soc_mask
+                do
+                    echo $bcl_soc_hotplug_mask > $hotplug_soc_mask
+                done
+                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
+                do
+                    echo -n enable > $mode
+                done
+
                 # Bring up all cores online
                 echo 1 > /sys/devices/system/cpu/cpu1/online
                 echo 1 > /sys/devices/system/cpu/cpu2/online
@@ -1000,25 +1017,6 @@ case "$target" in
                 echo 40 > /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres
                 echo 100 > /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms
                 echo 1 > /sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster
-
-                # re-enable thermal & BCL core_control now
-                echo 1 > /sys/module/msm_thermal/core_control/enabled
-                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
-                do
-                    echo -n disable > $mode
-                done
-                for hotplug_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_mask
-                do
-                    echo $bcl_hotplug_mask > $hotplug_mask
-                done
-                for hotplug_soc_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_soc_mask
-                do
-                    echo $bcl_soc_hotplug_mask > $hotplug_soc_mask
-                done
-                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
-                do
-                    echo -n enable > $mode
-                done
 
                 # Enable dynamic clock gating
                 echo 1 > /sys/module/lpm_levels/lpm_workarounds/dynamic_clock_gating
@@ -1103,7 +1101,6 @@ case "$target" in
                 echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
                 echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
                 echo 400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-		echo "40 1017600:50 1190400:60 1305600:70 1382400:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 
                 # enable governor for perf cluster
                 echo 1 > /sys/devices/system/cpu/cpu4/online
@@ -1115,6 +1112,7 @@ case "$target" in
                 echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
                 echo 400000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
                 echo 60000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis
+		echo "40 1017600:50 1190400:60 1305600:70 1382400:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 
                 if [ $panel -gt 1080 ]; then
                     #set texture cache size for resolution greater than 1080p
@@ -1126,7 +1124,7 @@ case "$target" in
                 echo "691200:60 806400:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
                 echo 1382400 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
                 echo "19000 1382400:39000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-                echo "60 1190400:70 1382400:80 1747200:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+                echo "70 1190400:80 1382400:90 1747200:95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
                 # HMP Task packing settings for 8976
                 echo 30 > /proc/sys/kernel/sched_small_task
                 echo 20 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
@@ -1138,7 +1136,24 @@ case "$target" in
                 echo 20 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_load
                 echo 20 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_load
 
-                echo 0 > /proc/sys/kernel/sched_boost
+                # re-enable thermal & BCL core_control now
+                echo 1 > /sys/module/msm_thermal/core_control/enabled
+                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
+                do
+                    echo -n disable > $mode
+                done
+                for hotplug_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_mask
+                do
+                    echo $bcl_hotplug_mask > $hotplug_mask
+                done
+                for hotplug_soc_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_soc_mask
+                do
+                    echo $bcl_soc_hotplug_mask > $hotplug_soc_mask
+                done
+                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
+                do
+                    echo -n enable > $mode
+                done
 
                 # Bring up all cores online
                 echo 1 > /sys/devices/system/cpu/cpu1/online
@@ -1157,19 +1172,11 @@ case "$target" in
                     echo N > /sys/module/lpm_levels/system/a72/cpu6/retention/idle_enabled
                     echo N > /sys/module/lpm_levels/system/a72/cpu7/retention/idle_enabled
                 fi
-
-		if [ `cat /sys/devices/soc0/revision` == "1.0" ]; then
-		    # Disable l2-pc and l2-gdhs low power modes
-		    echo N > /sys/module/lpm_levels/system/a53/a53-l2-gdhs/idle_enabled
-		    echo N > /sys/module/lpm_levels/system/a72/a72-l2-gdhs/idle_enabled
-		    echo N > /sys/module/lpm_levels/system/a53/a53-l2-pc/idle_enabled
-		    echo N > /sys/module/lpm_levels/system/a72/a72-l2-pc/idle_enabled
-		fi
-
+                
 		# Disable L2 GDHS on 8976
 		echo N > /sys/module/lpm_levels/system/a53/a53-l2-gdhs/idle_enabled
 		echo N > /sys/module/lpm_levels/system/a72/a72-l2-gdhs/idle_enabled
-
+		
                 # Enable Low power modes
                 echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
 
@@ -1190,25 +1197,6 @@ case "$target" in
                 echo 40 > /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres
                 echo 100 > /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms
                 echo 1 > /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster
-
-                # re-enable thermal & BCL core_control now
-                echo 1 > /sys/module/msm_thermal/core_control/enabled
-                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
-                do
-                    echo -n disable > $mode
-                done
-                for hotplug_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_mask
-                do
-                    echo $bcl_hotplug_mask > $hotplug_mask
-                done
-                for hotplug_soc_mask in /sys/devices/soc.0/qcom,bcl.*/hotplug_soc_mask
-                do
-                    echo $bcl_soc_hotplug_mask > $hotplug_soc_mask
-                done
-                for mode in /sys/devices/soc.0/qcom,bcl.*/mode
-                do
-                    echo -n enable > $mode
-                done
 
                 # Enable timer migration to little cluster
                 echo 1 > /proc/sys/kernel/power_aware_timer_migration

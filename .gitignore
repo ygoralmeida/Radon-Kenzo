@@ -95,6 +95,7 @@ x509.genkey
 # Compiled kernel
 !build/system/lib/fpc_fingerprint_hal.so
 !build/system/lib64/fpc_fingerprint_hal.so
+!oc.patch
 build/*.zip
 build/tools/dt1.img
 build/tools/dt2.img
