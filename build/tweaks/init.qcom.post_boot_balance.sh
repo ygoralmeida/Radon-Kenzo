@@ -1112,7 +1112,7 @@ case "$target" in
                 echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
                 echo 400000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
                 echo 60000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis
-		echo "40 1017600:50 1190400:60 1305600:70 1382400:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+		echo "50 1017600:60 1190400:70 1305600:80 1382400:90 1401600:95" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 
                 if [ $panel -gt 1080 ]; then
                     #set texture cache size for resolution greater than 1080p
@@ -1124,7 +1124,7 @@ case "$target" in
                 echo "691200:60 806400:80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
                 echo 1382400 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
                 echo "19000 1382400:39000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-                echo "70 1190400:80 1382400:90 1747200:95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+                echo "75 1190400:85 1382400:90 1747200:95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
                 # HMP Task packing settings for 8976
                 echo 30 > /proc/sys/kernel/sched_small_task
                 echo 20 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
