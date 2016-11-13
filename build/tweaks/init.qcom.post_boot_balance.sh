@@ -1097,7 +1097,7 @@ case "$target" in
                 echo 1 > /sys/devices/system/cpu/cpu0/online
                 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
                 echo 80 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+                echo 30000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
                 echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
                 echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
                 echo 400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
@@ -1106,13 +1106,13 @@ case "$target" in
                 echo 1 > /sys/devices/system/cpu/cpu4/online
                 echo "interactive" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
                 echo 85 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-                echo 20000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+                echo 30000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
                 echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
                 echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
                 echo 40000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
                 echo 400000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
                 echo 60000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis
-		echo "50 1017600:60 1190400:70 1305600:80 1382400:90 1401600:95" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+		echo "55 1017600:65 1190400:75 1305600:80 1382400:90 1401600:95" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 
                 if [ $panel -gt 1080 ]; then
                     #set texture cache size for resolution greater than 1080p
